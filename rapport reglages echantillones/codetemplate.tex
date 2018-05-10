@@ -1,0 +1,109 @@
+%-------------------- Packages --------------------%
+
+\documentclass[11pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath} %pour les formules maths
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx} %pour inclure des images
+\usepackage{hyperref} %pour les lien URLs
+\usepackage{framed}
+\usepackage[left=3cm,right=3cm,top=3.5cm,bottom=3.5cm]{geometry}
+\usepackage{pifont} %pour les puces spéciales
+\usepackage{listings} %pour écrire du code
+\usepackage{xcolor} %pour la mise en couleur
+\usepackage{multirow} %pour les tableaux
+\usepackage{bclogo} %pour des boîtes texte avec un logo
+\usepackage{eurosym}
+
+%-------------------- New Colors --------------------%
+
+%Basic
+
+\definecolor{purple}{rgb}{0.6, 0.2, 0.9}
+
+%Dark
+\definecolor{dkgreen}{rgb}{0,.6,0}
+\definecolor{dkblue}{rgb}{0,0,.6}
+\definecolor{dkyellow}{cmyk}{0,0,.8,.3}
+\definecolor{dkred}{rgb}{0.6, 0, 0}
+
+
+%Light
+\definecolor{ltblue}{rgb}{0.67, 0.85, 0.9}
+\definecolor{ltred}{rgb}{0.8, 0.32, 0.32}
+\definecolor{ltgrey}{rgb}{0.94,0.94,0.94}
+
+
+
+%-------------------- Config lstlisting --------------------%
+
+\lstset{
+language=php,
+basicstyle=\ttfamily\tiny, %
+identifierstyle=\color{dkred}, %
+keywordstyle=\color{dkblue}, %
+stringstyle=\color{dkgreen}, %
+commentstyle=\it\color{gray}, %
+emph=[1]{php},
+emphstyle=[1]\color{black},
+emph=[2]{if,and,or,else},
+emphstyle=[2]\color{dkyellow},
+emph=[3]{imap_open, imap_close, imap_fetch_overview, imap_check, imap_list, imap_mail_move, imap_search, imap_fetchstructure			},
+emphstyle=[3]\color{dkblue},
+emph=[4]{string, int, double, float, private, public, static, bool, resource, array, object},
+emphstyle=[4]\color{purple},
+columns=flexible, %
+tabsize=2, %
+extendedchars=true, %
+showspaces=false, %
+showstringspaces=false, %
+numbers=left, %
+numberstyle=\tiny, %
+breaklines=true, %
+breakautoindent=true, %
+captionpos=b, %
+backgroundcolor=\color{ltgrey}
+}
+
+
+%-------------------- New Commands --------------------%
+
+%Pour rédiger des QUESTIONS: la question est inscrite en noir et la réponse est automatiquement mise à la ligne, en vert, avec une puce spécifique
+\newcommand{\quest}[2]{#1\newline\hspace*{.5cm}\textcolor{dkgreen}{\ding{228} #2}\paragraph{}}
+
+%Pour rédiger un simple GLOSSAIRE: le terme est séparé de sa définition par ':'
+\newcommand{\gloss}[2]{\paragraph{}$\square$\hspace*{.2cm} \textbf{\texttt{{#1}}}: \hspace*{.3cm}#2}
+
+%Pour rédiger une définition de DICTIONNAIRE
+\newcommand{\dict}[3]{\paragraph{}$\square$\hspace*{.2cm} \textbf{\texttt{{#1}}}: \hspace*{.3cm}#3 \newline\textit{Dom: #2}}
+
+%Pour rédiger une INFORMATION -----> CHERCHER PACKAGE FANCYBOX 
+%Rem: \colorbox est chargée via le package "graphicx"
+\newcommand{\info}[1]{\paragraph{}\colorbox{ltblue}{
+	\begin{minipage}{.9\linewidth}#1\end{minipage}} }
+%PACKAGE BCLOGO pour obtenir des boîtes dans lesquelles mettre un logo en plus du texte
+%une alternative de minipage est "parbox"
+%Site: "latex-howto.be"
+%le package "framed" permet d'étendre les box sur plusieurs pages
+%il existe la commande \newsavebox{\name} qui permet d'enregistrer le pattern d'une box et de la réutiliser à tout moment 
+%	via \usebox{\name}. \savebow permet de définir le pattern
+%Se  renseigner sur la création de nouveaux logos (fichiers metapost, eps
+
+
+%Pour rédiger une REMARQUE
+
+
+%pour régider un ATTENTION
+
+
+
+%Pour rédiger une NOTE
+\newcounter{NoteCounter}\setcounter{NoteCounter}{1} %Compteur qui s'incrémente à chaque nouvelle note
+
+\newcommand{\note}[3]{\textcolor{dkblue}{\paragraph{\ding{229} Note \theNoteCounter\addtocounter{NoteCounter}{1}} 
+\begin{itemize}\item[$\cdot$]\textsc{Date: }#1\item[$\cdot$]\textsc{Sujet: }\textbf{#2}\end{itemize} \paragraph{}#3}}
+
+\newcommand{\snote}[4]{\textcolor{dkred}{\paragraph{\ding{229} Note \theNoteCounter\addtocounter{NoteCounter}{1}} \begin{itemize}\item[$\cdot$]\textsc{Date: }#1\item[$\cdot$]\textsc{Intervenant: }#2\item[$\cdot$]\textsc{Sujet: }\textbf{#3}\end{itemize} \paragraph{}#4}}

@@ -1,0 +1,19 @@
+\input{codetemplate.tex}
+
+\def\frenchchaptername{Séance}
+
+\usepackage{array,tabu}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+\usepackage{icomma} % pour retirer l'espace après la virgule en mode math
+\usepackage{pdflscape}
+\usepackage{geometry}
+
+\begin{document}
+\input{page-garde/page-garde.tex}
+
+\input{seances/seance-1.tex}
+\input{seances/seance-2.tex}
+\input{seances/seance-3.tex}
+
+\end{document}
