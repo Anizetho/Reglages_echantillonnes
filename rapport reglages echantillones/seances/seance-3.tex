@@ -1,14 +1,92 @@
 % !TEX root =  ../main.tex
-\chapter{Synthèse d'un régulateur discret.}
+\chapter{Synthèse d'un régulateur discret}
 
 \section{Introduction}
-Durant la troisième et dernière séance de laboratoire, il a été demandé aux élèves de synthétiser sur le logiciel MATLAB un régulateur discret de compensation en boucle fermée et d'en analyser la réponse. Pour ce faire, il a tout d'abord fallu calculer l'équivalent échantillonné bloqué de ce régulateur (discrétisation). Ensuite, il a fallut imposer un intégrateur dans le régulateur discret de compensation.
+Durant la troisième et dernière séance de laboratoire, il a été demandé aux élèves de synthétiser sur le logiciel Matlab\textregistered{} un régulateur discret de compensation en boucle fermée et d'en analyser la réponse.
+Pour ce faire, il a tout d'abord fallu calculer l'équivalent échantillonné bloqué de ce régulateur (discrétisation).
+Et ensuite, imposer un intégrateur dans le régulateur discret de compensation.
 
-\section{Notions théoriques}
+\section{Hypothèses}
+Soit le système défini par l'équation :
+\begin{equation}
+	H_c(s) = \frac{1}{s\left( s+0,5\right)}
+		   = \frac{2}{s\left(2s+1  \right)}
+	\label{eqn:system3}
+\end{equation}
+Nous cherchons à effectuer la synthèse d'un régulateur discret compensant le système~(\ref{eqn:system3}) en boucle fermée, et respectant les spécifications suivantes :
+\begin{enumerate}
+	\item Dépassement de 5\% $(\xi=0,69)$
+	\item Temps de réponse à 95\% ($3T$) de 1
+	\item Erreur de vitesse nulle
+	\item $h = 0,1$
+\end{enumerate}
+Notons avant tout que la spécification sur l'erreur de vitesse nulle implique un double intégrateur dans la chaîne directe.
+Ceci nous indique d'avance que le régulateur suivra la forme :
+\begin{equation}
+	R(Z) = \frac{\dots}{(Z-\alpha)(Z-\beta)}
+\end{equation}
 
-
+%%%%%%%%%%%%%%%%%
 \section{Analyse}
+La première étape est toujours la même, nous devons traduire la fonction de transfert dans le domaine discret.
+Pour cela nous utilisons la commande \texttt{c2d()} de Matlab\textregistered{} qui équivaut à convoluer la fonction par un bloqueur d'ordre 1.
+C.-à-d. effectuer l'opération :
+\begin{align}
+	H_d(Z) &= \underset{s\rightarrow Z}{\mathcal{L}} H_c(s) \\[2mm]
+		   &= \frac{k}{(Z-1)(Z-p)}
+		   \label{eqn:uncompensated}
+\end{align}
+Dans cette forme, les points sont distants de la période d'échantillonnage.
+Cela entraine que l'influence de l'entrée sur la sortie est perçue après cette même période.
+Ceci implique également que la différence entre l'ordre du dénominateur et du numérateur doit être égale à 1.
+Pour imposer cet ordre, nous rajoutons un zéro au numérateur de~(\ref{eqn:uncompensated}).
+Ce qui donne :
+\begin{equation}
+	H_d(Z) = \frac{k\,(Z-z)}{(Z-1)(Z-p)}
+\end{equation}
 
+De cette forme discrétisée, nous désirons extraire les pôles et les zéros.
+Matlab\textregistered{} propose une fonction permettant de les extraire en un appel, \texttt{zpkdata()}.
+Nous employons par la suite ces coefficients obtenus dans le régulateur $R(Z)$ pour compenser $H_d(Z)$.
+$R(Z)$ est donc une régulateur de compensation.
+
+\begin{equation}
+	R(Z) = k\,\frac{(Z-p)}{(Z-z)(Z-1)}
+\end{equation}
+On a un décalage car l'ordre du dénominateur est plus grand que l'ordre du numérateur.
+Quand le régulateur aperçoit un écart de réglage à sa consigne, il doit réagir immédiatement.
+Il \og{}mouline\fg{} dans un temps qui est supposé très petit et négligeable sur la période puis il envoie.
+On rajoute un zéro au numérateur pour faire en sorte qu'il n'y ait pas de retard dans le régulateur.
+\begin{equation}
+	R(Z) = k\,\frac{(Z-p)(Z-n)}{(Z-z)(Z-1)}
+\end{equation}
+Ensuite nous faisons le produit en boucle ouverte du régulateur avec le système.
+\begin{equation}
+	R(Z)H_d(Z) = B_0(Z) = \frac{k\,(Z-n)}{(Z-1)^2}
+\end{equation}
+On constate que dans le chaîne directe, il y a bien un retard d'une période.
+
+%%%%%%%%%%%%%%%%%%
+\section{Synthèse}
+Maintenant que nous savons comment procéder, tentons de faire la synthèse du régulateur.
+Nous savons que $H_s(Z)$ est sous la forme :
+\begin{equation}
+	H_s(Z) = \frac{\dots}{(Z-P_{d1})(Z-P_{d2})}
+\end{equation}
+Nous cherchons à trouver les valeurs de $P_{d1}$ et $P_{d2}$.
+Nous allons les trouver par équivalences
+\begin{equation}
+	F(Z) = \frac{k\,(Z-n)}{(Z-1)^2+k\,(Z-n)}
+\end{equation}
+
+\begin{equation}
+	\begin{cases}
+		k = 2-P_{d1}-P_{d2} \\[2mm]
+		n = \frac{(1-P_{d1}P_{d2})}{k}
+	\end{cases}
+\end{equation}
+
+
+\texttt{dtr2ord2o.m} retourne la fonction de transfert d'un système du second ordre aux spécifications fournies.
 
 \section{Conclusion}
-
