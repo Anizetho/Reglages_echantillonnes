@@ -4,12 +4,35 @@
 \section{Introduction}
 Durant cette seconde séance de laboratoire, il a été demandé aux étudiants de synthétiser sur le logiciel MATLAB un régulateur continu en boucle fermée. Une fois cette étape réalisée, la discrétisation de ce régulateur selon 3 périodes d'échantillonnage a été effectuée afin d'obtenir 3 régulateurs discrets. Le but final était alors de comparer, grâce à Simulink, les performances du régulateur continu avec les 3 régulateurs discrets obtenus. 
 
-
 \section{Notions théoriques}
 
 
 \section{Analyse}
+Nous avons construit un régulateur continu par cancelation des poles et zeros en gardant l’intégrateur. Dans la chaine direct il reste un simple intégrateur avec un simple gain qu’il faut determiner. Quand on reboucle un intégrateur avec un simple gain on a un filtre du premier ordre donc ça permet de placer la constante de temps.
 
+On synthétise le régulateur continu et puis on discretise. L’inconvenient de cette procedure est qu'on n’a pas pris en compte le bloqueur d’ordre 0.
+Ce bloqueur en moyenne entraine un retard d’une demi période. Ça veut dire que ça fera tomber la courbe des phases et qu’on pourra partir en instabilité à un moment.
+Plus la période d’échantillonnage est grande plus ça se degrade.
+On fait le passage continu discret du régulateur par les differences finies à gauche et on sait qu'avec les pôles dans le plan gauche, on peut avoir une projection a l’extérieur du cercle. Donc des pôles stables continus peuvent devenir instables en discret. Ce sont les inconvénients de la méthode.
+
+La deuxième étape était de discrétiser le système par l’équivalent échantillonné bloqué. Cela veut dire qu’on passe du domaine S au Z en tenant compte du bloqueur et qu'on réalise une vraie synthèse discrète de la même façon en prenant les pôles du système pour les mettre aux zeros du régulateur et inversement. On maintient l’intégrateur discret avec le dénominateur. Et on reboucle pour aller placer les poles discrets à l’endroit voulu c’est à dire les poles continus projetés en Z avec \[Z=e^{sh}\].
+
+
+La deuxième réponse : la réponse du système souhaité et celle qu’on obtient sont quasiment les mêmes car la période d’échantillonnage est petite et que le temps mort supplémentaire ne nous embête pas trop.
+
+La vraie synthèse discrete est lorsque le système est discrétisé avec c2d et là on a que la réponse est exactement celle qu’on souhaite. Si on augmente la période d’échantillonnage, \textcolor{orange}{constante de temps au dénominateur est 3 secondes, c’est pas mal une période d’échantillonnage de 1 seconde.}
+
+Avec la discrétisation du régulateur, on commence à avoir des problèmes car on ne tient pas compte du bloqueur.
+
+Dans le dernier cas, aux instants d’échantillonnage, on est sur la valeur souhaitée. En dehors de ces instants, on ne maitrise pas car on a imposé les pôles d’un système discret pour qu’aux instants d’échantillonnage on soit sur la réponse du filtre du premier ordre.
+La réponse souhaitée est la réponse avec un régulateur synthétisé en continu et discrétisé et donc on n'a pas tenu compte dans la synthèse du régulateur du bloqueur d’ordre 0.
+\textcolor{orange}{Mettre sur les scopes : ce qu’on souhaite et ce qu’on obtient et puis on voit ce qu’on souhaite
+On voit l’influence de l’intégrateur, le système part chercher une asymptote a l’infini, à la période d’échantillonnage qui suit on est sur le modele de reference souhaité. On est sur la valeur.}
+
+Le régulateur discrétisé on a des dépassements importants et avec le vrai régulateur discret malgré que la période d’échantillonnage est importante, aux instants d’échantillonnage on est à nouveau sur la trajectoire. Donc c’était le but de cet exercice, il faut se méfier quand on fait synthèses continues et qu’on discrétise.
+
+On a pris en compte le bloqueur en faisant le passage S vers Z avec c2d
+Quand on fait c2d on fait H(s)*B0(s) et c’est le produit de ces deux là qu’on passe dans le plan Z. On ajoute donc à H(s) le bloqueur d’ordre 0, c’est pas correct point de vue mathématique que la transmittance en S, il bloque pendant une période donc si on applique une impulsion discrete a l’entrée du bloqueur pendant la période d’échantillonnage h il doit faire ça (voir notes). Impulsion discrete c’est celle calculée dans le régulateur par la routine qu’on a établi. Le signal en bleu, c’est un echelon auquel on soustraie un echelon décalé d’une période. C’est ce signal qu’on obtient pour une impulsion discrete en entree.
 
 \section{Conclusion}
 
