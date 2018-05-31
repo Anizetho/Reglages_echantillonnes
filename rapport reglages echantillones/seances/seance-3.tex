@@ -69,19 +69,23 @@ On constate que dans le chaîne directe, il y a bien un retard d'une période.
 %%%%%%%%%%%%%%%%%%
 \section{Synthèse}
 
-Dans le plan complexe les pôles continus sont sur une droite d’amortissement inclinée d’un certain angle theta tel que, dans notre cas, le sinus de l'angle theta est de 0,69. C'est le sin de l’angle d’inclinaison de la droite d’amortissement sur laquelle se trouvent les pôles. Le sin de l'angle theta détermine ainsi le dépassement de 5\% cité dans l'énoncé du laboratoire et qui est une des spécifications du régulateur.
+Dans le plan complexe les pôles continus sont sur une droite d'amortissement inclinée d'un certain angle \Theta{}, tel que dans notre cas $sin(\Theta) = 0,69$.
+C'est le sin de l'angle d'inclinaison de la droite d'amortissement sur laquelle se trouvent les pôles.
+Le $sin(\Theta)$ détermine ainsi le dépassement de 5\% cité dans l'énoncé du laboratoire et qui est une des spécifications du régulateur.
 
-Ensuite, nous avons le temps de réponse a 95\% de 1. Si on traduit cela sous forme de pôles et de 0, dans le cas d'un filtre du 1er ordre, on a que le lien entre un pôle et une constante de temps est que l'un est l’inverse de l’autre. La constante de temps vaut T=1/3.
-La partie réelle du pôle va donc se trouver à l’inverse (et signe opposé) de cette constante de temps. On peut le voir sur la Figure 3.1 où, comme on l'a dit, $\delta$ = $\frac{1}{T}$ et donc $\delta$ = 3. On trouve ainsi la paire de pôles complexes  qui donne en boucle fermée une réponse pour que les deux premières conditions de l'énoncé soient respectées.
-
+Ensuite, nous avons le temps de réponse à 95\% de 1.
+Si nous traduisons cela sous forme de pôles et de zéro dans le cas d'un filtre du 1\up{er} ordre, nous trouvons que le lien entre un pôle et une constante de temps est l'inverse l'un de l'autre.
+La constante de temps vaut T=1/3.
+La partie réelle du pôle va donc se trouver à l'inverse (et signe opposé) de cette constante de temps.
+On peut le voir sur la Figure~\ref{fig:temps-de-reponse} où, comme on l'a dit, $\delta = T^{-1}$ et donc $\delta = 3$.
+On trouve ainsi la paire de pôles complexes  qui donne en boucle fermée une réponse pour que les deux premières conditions de l'énoncé soient respectées.
 
 \begin{figure}[!ht]
-\centering
+	\centering
 	\includegraphics[scale=0.1]{images/IMG_1681.jpg}
 	\caption{Temps de réponse.}
-	\label{fig:temps de réponse}
+	\label{fig:temps-de-reponse}
 \end{figure}
-
 
 Nous pouvons également faire la synthèse du régulateur.
 Nous savons que $H_s(Z)$ est sous la forme :
