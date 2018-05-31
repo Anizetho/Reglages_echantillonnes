@@ -93,7 +93,7 @@ Nous savons que $H_s(Z)$ est sous la forme :
 	H_s(Z) = \frac{\dots}{(Z-P_{d1})(Z-P_{d2})}
 \end{equation}
 Nous cherchons à trouver les valeurs de $P_{d1}$ et $P_{d2}$.
-Nous allons les trouver par équivalences
+Nous allons les trouver par équivalences avec $F(Z)$, la transmittance en boucle fermée.
 \begin{equation}
 	F(Z) = \frac{k\,(Z-n)}{(Z-1)^2+k\,(Z-n)}
 \end{equation}
@@ -103,9 +103,10 @@ Nous allons les trouver par équivalences
 		k = 2-P_{d1}-P_{d2} \\[2mm]
 		n = \frac{(1-P_{d1}P_{d2})}{k}
 	\end{cases}
+	\label{eqn:equivalence}
 \end{equation}
 
-
-\texttt{dtr2ord2o.m} retourne la fonction de transfert d'un système du second ordre aux spécifications fournies.
+En utilisant la fonction \texttt{dtr2ord2o.m} fournie, nous avons pu générer la transmisttance d'un système continu du second ordre répondant aux spécifications.
+Nous avons pu extraire les valeurs $P_{d1}$ et $P_{d2}$ de cette transmittance, et par résolution du système~\ref{eqn:equivalence} nous avons obtenu la transmittance du système à synthétiser en boucle fermée.
 
 \section{Conclusion}
