@@ -2,7 +2,7 @@
 \chapter{Synthèse d'un régulateur discret}
 
 \section{Introduction}
-Durant la troisième et dernière séance de laboratoire, il a été demandé aux élèves de synthétiser sur le logiciel Matlab\textregistered{} un régulateur discret de compensation en boucle fermée et d'en analyser la réponse.
+Durant la troisième et dernière séance de laboratoire, il a été demandé aux élèves de synthétiser sur le logiciel MATLAB\textregistered{} un régulateur discret de compensation en boucle fermée et d'en analyser la réponse.
 Pour ce faire, il a tout d'abord fallu calculer l'équivalent échantillonné bloqué de ce régulateur (discrétisation).
 Et ensuite, imposer un intégrateur dans le régulateur discret de compensation.
 
@@ -29,7 +29,7 @@ Ceci nous indique d'avance que le régulateur suivra la forme :
 %%%%%%%%%%%%%%%%%
 \section{Analyse}
 La première étape est toujours la même, nous devons traduire la fonction de transfert dans le domaine discret.
-Pour cela nous utilisons la commande \texttt{c2d()} de Matlab\textregistered{} qui équivaut à convoluer la fonction par un bloqueur d'ordre 1.
+Pour cela nous utilisons la commande \texttt{c2d()} de MATLAB\textregistered{} qui équivaut à convoluer la fonction par un bloqueur d'ordre 1.
 C.-à-d. effectuer l'opération :
 \begin{align}
 	H_d(Z) &= \underset{s\rightarrow Z}{\mathcal{L}} H_c(s) \\[2mm]
@@ -46,7 +46,7 @@ Ce qui donne :
 \end{equation}
 
 De cette forme discrétisée, nous désirons extraire les pôles et les zéros.
-Matlab\textregistered{} propose une fonction permettant de les extraire en un appel, \texttt{zpkdata()}.
+MATLAB\textregistered{} propose une fonction permettant de les extraire en un appel, \texttt{zpkdata()}.
 Nous employons par la suite ces coefficients obtenus dans le régulateur $R(Z)$ pour compenser $H_d(Z)$.
 $R(Z)$ est donc une régulateur de compensation.
 
