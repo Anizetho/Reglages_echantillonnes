@@ -109,23 +109,56 @@ Nous allons les trouver par équivalences avec $F(Z)$, la transmittance en boucl
 En utilisant la fonction \texttt{dtr2ord2o.m} fournie, nous avons pu générer la transmisttance d'un système continu du second ordre répondant aux spécifications.
 Nous avons pu extraire les valeurs $P_{d1}$ et $P_{d2}$ de cette transmittance, et par résolution du système~\ref{eqn:equivalence} nous avons obtenu la transmittance du système à synthétiser en boucle fermée.
 
-\section{Conclusion}
-Après avoir rentré la fonction de transfert et son régulateur dans Simulink, nous avons pu simuler son action correctrice.
-Les résultats sont observables sur les figures \ref{fig:action-correctrice} et \ref{fig:systeme-complet}.
-L'effet de l'échantillonnage se fait clairement ressentir sur l'action correctrice.
-Nous espérions, des dires du professeur, observer des oscillations sur la réaction du système en boucle fermée mais nous n'observons rien de tel.
-Malgré nos chipotages dans les paramètres de simulink, nous ne sommes pas arrivé à mettre en avant ce phénomène.
+\pagebreak
+Cette séquence d'opération a été réalisé sous MATLAB à l'aide du script suivant :
+{\footnotesize\begin{verbatim}
+h = 0.1;
+nH = 1;
+dH = conv([1 0], [1,0.5]);
+Hc = tf(nH, dH);
+Hd = c2d(Hc, h, 'zoh');
 
-\begin{figure}[!t]
-	\centering
-	\includegraphics[width=0.9\textwidth]{images/action-reaction.png}
-	\caption{Effet de l'action correctrice du régulateur discret.}
-	\label{fig:action-correctrice}
-\end{figure}
+% R(z) = [K(Z-p)(Z-n)]/[(Z-z)(Z-1)]
+[z,p,~] = zpkdata(Hd, 'v');
+p = p(2);
+
+[pc] = dtr2ord2o(1, 5, 5); % trouve les poles pd1 et pd2
+pd = exp(pc*h);            % discretise les poles
+K = 2-pd(1)-pd(2);         % calcul le gain d'Evans unite
+n = (1-pd(1)*pd(2))/K;     % calcul du zero additionnel
+
+Z = tf('z', h);
+F = K*(Z-n)/((Z-1)^2+K*(Z-n));    % boucle fermee
+R = K*(Z-p)*(Z-n)/((Z-z)*(Z-1));  % regulateur
+
+% autre maniere de fermer la boucle
+Bo = R*Hd;
+Bf = feedback(Bo,1);
+Bf = minreal(Bf);
+\end{verbatim}}
+
+
+\section{Conclusion}
+Une fois les valeurs de $k$ et $n$ obtenues, la fonction de transfert du régulateur $R(Z)$
+et la transmittance en boucle fermée $F(Z)$.
+Nous pouvons finalement réaliser un modèle simulink pour simuler l'exactitude de nos calculs.
+Nous avons tenté de reproduire au mieux l'exemple présenté au laboratoire, notre version est présenté à la figure~\ref{fig:manipulation}.
+
+La partie supérieur du graphique représente l'action correctrice, on note ses oscillations du à la présence d'un zéro dans la partie gauche du cercle des pôles et des zéros.
+
+Dans la partie inférieur du graphique, nous observons tout d'abord l'échelon unitaire en jaune s'exprimant à 0.5 unité de temps.
+La courbe en bleu est l'équivalent en $S$ de la fonction $F(Z)$, on peut y noter sa réponse stable avec un très faible dépassement.
+Et pour finir en orange se trouve la sortie du système continue $H_c(S)$ qui est placé en cascade à la suite du régulateur $R(Z)$.
+On désirait un dépassement de 5\% mais nous obtenons à la place un dépassement monstrueux, cela est dû au zéro que nous avons du ajouter qui entraine également les oscillations de la réponse entre chaque instant d'échantillonnage.
+Afficher la sortie du système continue au lieu de $F(Z)$ permet d'observer ces oscillations qui seraient cachées dans l'équivalent échantillonné.
+
+On peut noter que le régulateur effectue correctement sa tâche puisque après une phase de stabilisation et à chaque instant d'échantillonnage, toutes les 0.1 unités de temps, la différence entre la courbe et la valeur attendue est 0 !
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.8\textwidth]{images/system-complet.png}
-	\caption{Réaction du système en boucle fermée à un échelon unitaire.}
-	\label{fig:systeme-complet}
+	\includegraphics[width=\textwidth]{eps/labo3.eps}
+	\caption{Simulation de la transmittance en boucle fermée échantillonnée.
+			 On peut apercevoir sur la courbe orange les oscillations de la sortie
+			 entre chaque période d'échantillonnage qui dure 100 ms.}
+	\label{fig:manipulation}
 \end{figure}
