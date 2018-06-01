@@ -57,7 +57,8 @@ slabo3
 sim('slabo3',4)
 t1=S1.time;
 D1=[S1.signals.values];
-t2=S2.time;D2=[S2.signals.values];
+t2=S2.time;
+D2=[S2.signals.values];
 subplot(211);
 plot(t2,D2(:,1));grid;
 A=axis;
