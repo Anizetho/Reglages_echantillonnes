@@ -1,0 +1,72 @@
+\chapter{Séance 1: Codes matlab}\label{annexe-1}
+La fonction ci-dessous permet de discrétiser un système d'après les méthodes des différences finies (\textit{gauche, droite centrale)} et par l'équivalent échantilloné bloqué. \\
+Les paramètres utilisés sont:
+\begin{itemize}[label=$\cdot$]
+\item H:  expression (en $s$) du système
+\item pe: la période d'échantillonnage.
+\end{itemize} 
+\paragraph{}
+Les résultats obtenus sont ensuite comparés sous leur formes temporelles et fréquentielles.
+
+{\footnotesize\begin{verbatim}
+%function s1_plot(H,pe)
+z   = tf('z',pe);
+
+% équivalent bloqué & signal de base
+Hb  = c2d(H,pe);
+[yb,t] = step(Hb);
+ye  = 1-exp(-t);
+
+%Différences finies à gauche
+sg = (z-1)/pe;
+Hg = 1/(sg+1);
+yg = step(Hg);
+
+%Différences finies à droite
+sd = (z-1)/(pe*z);
+Hd = 1/(sd+1);
+yd = step(Hd);
+
+%Différences finies central
+sc = (z-1)/(z+1)*2/pe;
+Hc = 1/(sc+1);
+yc = step(Hc);
+
+[~,~,wout]    = bode(H);
+
+
+
+
+
+
+% PLOT
+figure
+
+subplot(1,3,1)
+plot(t,ye,'-*',t,yg,'-*',t,yd,'-*',t,yc,'-*',t,yb,'-')
+title(sprintf('réponse temporelle pour une pe = %f',pe))
+legend('Hb','Hg','Hd','Hc','H','Location','southeast');grid
+subplot(1,3,2)
+title('erreur relative')
+plot(t,yb-ye,'-*',t,yg-ye,'-*',t,yd-ye,'-*',t,yc-ye,'-*')
+title('erreur relative')
+legend('Hb','Hg','Hd','Hc','Location','southeast');grid
+subplot(1,3,3)
+bode(Hb,Hg,Hd,Hc,H,wout)
+legend('Hb','Hg','Hd','Hc','H','Location','southwest');grid
+\end{verbatim}}
+
+\paragraph{}
+La fonction précédente a été utilisée dans l'exercice 2 pour le système de premier ordre $H(s)=\frac{1}{s+1}$
+{\footnotesize\begin{verbatim}
+s   = tf('s');
+H   = 1/(s+1);
+pe  = 1; 
+\end{verbatim}}
+
+\paragraph{}
+Ainsi qu'au point 4 pour un troisième ordre:
+{\footnotesize\begin{verbatim}
+H2  = 1/(s+1)^3;
+H2b = c2d(H2,pe);
+\end{verbatim}}
