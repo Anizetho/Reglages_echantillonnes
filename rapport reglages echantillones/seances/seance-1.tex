@@ -36,7 +36,7 @@ En effet, en traitement numérique, un signal analogique est tout d'abord échan
 \subsection{Liens entre les domaines continu et discret}
 %------------------------------------------------
 
-En temps continu, nous pouvons travailler avec la transformée de Fourier en $s$ d'un signal, qui nous amène dans le plan complexe.
+En temps continu, nous pouvons travailler avec la transformée en $s$ d'un signal, qui nous amène dans le plan complexe.
 
 En temps discret, nous travaillons avec la transformée en $z$ du signal et le plan $z$ qui comprend un cercle trigonométrique unitaire.
 
@@ -300,22 +300,22 @@ Finalement, l'équivalent échantillonné bloqué présente une erreure relative
 \item Le résultat obtenu par la méthode de l'\textbf{équivalent échantillonné bloqué} est la plus satisfaisante, c'est celle qui permet d'obtenir le système discret avec un comportement le plus proche du système réel.
 \item Par la méthode des différences finies à gauche, des pôles dans la partie  gauche (système stable) du plan en continu peuvent être projetés en dehors du cercle dans le plan z et ce en fonction de la période d'échantillonnage. Dès lors, une telle discrétisation d'un système peut le rendre \textbf{instable}.
 \item Lorsqu'on discrétise un système, il est important de prendre une période d'échantillonnage suffisament petite pour éviter le phénomène de repli spectrale.
-\item Le gain critique d'un système du 1$^{er}$ ordre bouclé vaut l’infini car la courbe des phases est asymptotique à -90 et qu’on a toujours de la marge de phase.
+\item Le gain critique d'un système du 1$^{er}$ ordre bouclé vaut l'infini car la courbe des phases est asymptotique à -90 et qu'on a toujours de la marge de phase.
 \end{enumerate}
 
 %===============================================================
 \section{Analyse d'un système d'ordre 3}
 %===============================================================
-Soit le système suivant d'ordre:
+Soit le système suivant d'ordre 3 :
 \begin{equation*}
 H(s) = \frac{1}{(s+1)^{3}}
 \end{equation*}
 
 \paragraph{}
-Nous allons étudier le déplacement des de ce système discrétisé, en fonction de la période d'échantillonnage.
+Nous allons étudier le déplacement de ce système discrétisé, en fonction de la période d'échantillonnage.
 
 \paragraph{}
-La fonction que nous obtenons pour le système discrétisé par la méthode d'échantillonneur bloqué est la suivante:
+La fonction que nous obtenons pour le système discrétisé par la méthode d'échantillonneur bloqué (c2d) est la suivante:
 \begin{itemize}[label=$\cdot$, itemsep=1em]
 \item $h=0.1$
 \begin{equation}
@@ -331,7 +331,7 @@ Hb(z) = \frac{0.0803 z^{2} + 0.1544z + 0.01788}{z^{3} - 1.104 z^{2} + 0.406z - 0
 \end{itemize}
 
 \paragraph{}
-Nous voyons bien que la discrétisation du système d'ordre 3 fait apparaître au numérateur un second degré en $z$ et donc deux zéros dont la valeur varie avec la période d'échnatillonnage.
+Nous voyons bien que la discrétisation du système d'ordre 3 fait apparaître au numérateur un second degré en $z$ et donc deux zéros dont la valeur varie avec la période d'échantillonnage.
 \\Ces zéros restent dans la partie gauche du plan, peu importe la période d'échantillonnage, et ils sont ramenés à l'intérieur du cercle unitaire pour une période supérieure à 2\textit{sec}.
 \begin{figure}[!h]  
   \begin{minipage}[b]{0.5\linewidth}
